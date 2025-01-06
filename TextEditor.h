@@ -189,6 +189,8 @@ public:
 	ErrorMarkers& GetErrorMarkers() { return mErrorMarkers; }
 	void ClearErrorMarkers();
 
+	void RequestScrollToErrorMarker() { mScrollToErrorMarker = true; }
+
 	void SetTabSize(int aValue);
 	inline int GetTabSize() const { return mTabSize; }
 	void SetLineSpacing(float aValue);
@@ -459,6 +461,7 @@ private:
 	int mColorRangeMax = 0;
 	bool mCheckComments = true;
 	ErrorMarkers mErrorMarkers;
+	bool mScrollToErrorMarker = false;
 	Palette mPalette;
 	const LanguageDefinition* mLanguageDefinition = nullptr;
 	RegexList mRegexList;

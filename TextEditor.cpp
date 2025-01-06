@@ -2257,6 +2257,13 @@ void TextEditor::Render(bool aParentIsFocused)
 			auto errorIt = mErrorMarkers.find(lineNo + 1);
 			if (errorIt != mErrorMarkers.end())
 			{
+				if (mScrollToErrorMarker)
+				{
+					mScrollToErrorMarker = false;
+					Coordinates coords = GetActualCursorCoordinates();
+					float targetScroll = std::max(0.0f, (coords.mLine - 0.5f) * mCharAdvance.y - (mContentHeight/2.0f));
+					ImGui::SetScrollY(targetScroll);
+				}
 				auto end = ImVec2(lineStartScreenPos.x + contentSize.x + 2.0f * mScrollX, lineStartScreenPos.y + mCharAdvance.y);
 				drawList->AddRectFilled(start, end, mPalette[(int)PaletteIndex::ErrorMarker]);
 

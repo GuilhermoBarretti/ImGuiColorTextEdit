@@ -34,3 +34,6 @@ TextEditor.cpp.bak
 *.bak
 Save/TextEditor.h
 Save/TextEditor.cpp
+
+.vscode/c_cpp_properties.json
+.vscode/settings.json

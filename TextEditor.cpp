@@ -2329,33 +2329,33 @@ void TextEditor::Render(bool aParentIsFocused)
 					auto timeEnd = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
 					auto elapsed = timeEnd - mStartTime;
 					if (elapsed > 400)
-				{
-					for (const auto& cursorCoords : cursorCoordsInThisLine)
 					{
-						float width = 1.0f;
-						auto cindex = GetCharacterIndexR(cursorCoords);
-						float cx = TextDistanceToLineStart(cursorCoords);
+						for (const auto& cursorCoords : cursorCoordsInThisLine)
+						{
+							float width = 1.0f;
+							auto cindex = GetCharacterIndexR(cursorCoords);
+							float cx = TextDistanceToLineStart(cursorCoords);
 
-						if (mOverwrite && cindex < (int)line.size())
-						{
-							if (line[cindex].mChar == '\t')
+							if (mOverwrite && cindex < (int)line.size())
 							{
-								auto x = (1.0f + std::floor((1.0f + cx) / (float(mTabSize) * spaceSize))) * (float(mTabSize) * spaceSize);
-								width = x - cx;
+								if (line[cindex].mChar == '\t')
+								{
+									auto x = (1.0f + std::floor((1.0f + cx) / (float(mTabSize) * spaceSize))) * (float(mTabSize) * spaceSize);
+									width = x - cx;
+								}
+								else
+									width = mCharAdvance.x;
 							}
-							else
-								width = mCharAdvance.x;
+							ImVec2 cstart(textScreenPos.x + cx, lineStartScreenPos.y);
+							ImVec2 cend(textScreenPos.x + cx + width, lineStartScreenPos.y + mCharAdvance.y);
+							drawList->AddRectFilled(cstart, cend, mPalette[(int)PaletteIndex::Cursor]);
+							if (mCursorOnBracket)
+							{
+								ImVec2 topLeft = { cstart.x, lineStartScreenPos.y + fontHeight + 1.0f };
+								ImVec2 bottomRight = { topLeft.x + mCharAdvance.x, topLeft.y + 1.0f };
+								drawList->AddRectFilled(topLeft, bottomRight, mPalette[(int)PaletteIndex::Cursor]);
+							}
 						}
-						ImVec2 cstart(textScreenPos.x + cx, lineStartScreenPos.y);
-						ImVec2 cend(textScreenPos.x + cx + width, lineStartScreenPos.y + mCharAdvance.y);
-						drawList->AddRectFilled(cstart, cend, mPalette[(int)PaletteIndex::Cursor]);
-						if (mCursorOnBracket)
-						{
-							ImVec2 topLeft = { cstart.x, lineStartScreenPos.y + fontHeight + 1.0f };
-							ImVec2 bottomRight = { topLeft.x + mCharAdvance.x, topLeft.y + 1.0f };
-							drawList->AddRectFilled(topLeft, bottomRight, mPalette[(int)PaletteIndex::Cursor]);
-						}
-					}
 					}
 					if (elapsed > 800)
 						mStartTime = timeEnd;

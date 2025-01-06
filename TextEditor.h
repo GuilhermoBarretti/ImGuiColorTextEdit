@@ -79,6 +79,8 @@ public:
 	int GetLastVisibleLine();
 	void SetViewAtLine(int aLine, SetViewAtLineMode aMode);
 
+	bool ConsumeSaveRequest();
+
 	void Copy();
 	void Cut();
 	void Paste();
@@ -409,6 +411,8 @@ private:
 	EditorState mState;
 	std::vector<UndoRecord> mUndoBuffer;
 	int mUndoIndex = 0;
+
+	bool mSaveRequested = false;
 
 	int mTabSize = 4;
 	float mLineSpacing = 1.0f;

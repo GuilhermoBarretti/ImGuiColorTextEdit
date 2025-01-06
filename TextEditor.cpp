@@ -2049,6 +2049,8 @@ void TextEditor::HandleKeyboardInputs(bool aParentIsFocused)
 			Copy();
 		else if (isShortcut && ImGui::IsKeyPressed(ImGuiKey_C))
 			Copy();
+		else if (ctrl && !shift && !alt && ImGui::IsKeyPressed(ImGuiKey_S))
+			mSaveRequested = true;
 		else if (!mReadOnly && isShiftOnly && ImGui::IsKeyPressed(ImGuiKey_Insert))
 			Paste();
 		else if (!mReadOnly && isShortcut && ImGui::IsKeyPressed(ImGuiKey_V))
@@ -2842,6 +2844,15 @@ void TextEditor::ColorizeInternal()
 		}
 		return;
 	}
+}
+
+bool TextEditor::ConsumeSaveRequest()
+{
+	if (mSaveRequested) {
+		mSaveRequested = false;
+		return true;
+	}
+	return false;
 }
 
 const TextEditor::Palette& TextEditor::GetDarkPalette()

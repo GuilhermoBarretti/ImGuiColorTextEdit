@@ -140,6 +140,11 @@ public:
 	typedef std::unordered_map<std::string, Identifier> Identifiers;
 	typedef std::array<ImU32, (unsigned)PaletteIndex::Max> Palette;
 	
+	static const Palette& GetDarkPalette();
+	static const Palette& GetMarianaPalette();
+	static const Palette& GetLightPalette();
+	static const Palette& GetRetroBluePalette();
+	
 	struct LanguageDefinition
 	{
 		typedef std::pair<std::string, PaletteIndex> TokenRegexString;
@@ -468,10 +473,6 @@ private:
 	inline bool IsVerticalScrollbarVisible() const { return mCurrentSpaceHeight > mContentHeight; }
 	inline int TabSizeAtColumn(int aColumn) const { return mTabSize - (aColumn % mTabSize); }
 
-	static const Palette& GetDarkPalette();
-	static const Palette& GetMarianaPalette();
-	static const Palette& GetLightPalette();
-	static const Palette& GetRetroBluePalette();
 	static const std::unordered_map<char, char> OPEN_TO_CLOSE_CHAR;
 	static const std::unordered_map<char, char> CLOSE_TO_OPEN_CHAR;
 	static PaletteId defaultPalette;

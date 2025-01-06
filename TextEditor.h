@@ -380,6 +380,7 @@ private:
 	int GetCharacterColumn(int aLine, int aIndex) const;
 	int GetFirstVisibleCharacterIndex(int aLine) const;
 	int GetLineMaxColumn(int aLine, int aLimit = -1) const;
+	std::string GetWordAt(const Coordinates& aCoords) const;
 
 	Line& InsertLine(int aIndex);
 	void RemoveLine(int aIndex, const std::unordered_set<int>* aHandledCursors = nullptr);

@@ -2436,6 +2436,32 @@ void TextEditor::Render(bool aParentIsFocused)
 	mCurrentSpaceHeight = (mLines.size() + Min(mVisibleLineCount - 1, (int)mLines.size())) * mCharAdvance.y;
 	mCurrentSpaceWidth = Max((maxColumnLimited + Min(mVisibleColumnCount - 1, maxColumnLimited)) * mCharAdvance.x, mCurrentSpaceWidth);
 
+	// Draw a tooltip on known identifiers/preprocessor symbols
+	if (ImGui::IsMousePosValid())
+	{
+		auto id = GetWordAt(ScreenPosToCoordinates(ImGui::GetMousePos()));
+		if (!id.empty())
+		{
+			auto it = mLanguageDefinition->mIdentifiers.find(id);
+			if (it != mLanguageDefinition->mIdentifiers.end())
+			{
+				ImGui::BeginTooltip();
+				ImGui::TextUnformatted(it->second.mDeclaration.c_str());
+				ImGui::EndTooltip();
+			}
+			else
+			{
+				auto pi = mLanguageDefinition->mPreprocIdentifiers.find(id);
+				if (pi != mLanguageDefinition->mPreprocIdentifiers.end())
+				{
+					ImGui::BeginTooltip();
+					ImGui::TextUnformatted(pi->second.mDeclaration.c_str());
+					ImGui::EndTooltip();
+				}
+			}
+		}
+	}
+
 	ImGui::SetCursorPos(ImVec2(0, 0));
 	ImGui::Dummy(ImVec2(mCurrentSpaceWidth, mCurrentSpaceHeight));
 
@@ -2496,6 +2522,22 @@ void TextEditor::Render(bool aParentIsFocused)
 		ImGui::SetScrollY(targetScroll);
 		mSetViewAtLine = -1;
 	}
+}
+
+std::string TextEditor::GetWordAt(const Coordinates & aCoords) const
+{
+	auto start = FindWordStart(aCoords);
+	auto end = FindWordEnd(aCoords);
+
+	std::string r;
+
+	auto istart = GetCharacterIndexL(start);
+	auto iend = GetCharacterIndexL(end);
+
+	for (auto it = istart; it < iend; ++it)
+		r.push_back(mLines[aCoords.mLine][it].mChar);
+
+	return r;
 }
 
 void TextEditor::OnCursorPositionChanged()

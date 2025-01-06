@@ -1,6 +1,7 @@
 #include <algorithm>
 #include <string>
 #include <set>
+#include <chrono>
 
 #include "TextEditor.h"
 
@@ -2325,6 +2326,10 @@ void TextEditor::Render(bool aParentIsFocused)
 				// Render the cursors
 				if (focused)
 				{
+					auto timeEnd = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+					auto elapsed = timeEnd - mStartTime;
+					if (elapsed > 400)
+				{
 					for (const auto& cursorCoords : cursorCoordsInThisLine)
 					{
 						float width = 1.0f;
@@ -2351,6 +2356,9 @@ void TextEditor::Render(bool aParentIsFocused)
 							drawList->AddRectFilled(topLeft, bottomRight, mPalette[(int)PaletteIndex::Cursor]);
 						}
 					}
+					}
+					if (elapsed > 800)
+						mStartTime = timeEnd;
 				}
 			}
 

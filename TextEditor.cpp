@@ -2309,6 +2309,18 @@ void TextEditor::Render(bool aParentIsFocused)
 			if (cursorCoordsInThisLine.size() > 0)
 			{
 				bool focused = ImGui::IsWindowFocused() || aParentIsFocused;
+	
+				// Highlight the current line (where the cursors is), unless it has selection.
+				if (!mState.mCursors[mState.mCurrentCursor].HasSelection())
+				{
+					auto scrollX = ImGui::GetScrollX();
+					auto scrollY = ImGui::GetScrollY();
+					auto contentSize = ImGui::GetWindowContentRegionMax();
+					auto start = ImVec2(lineStartScreenPos.x + scrollX, lineStartScreenPos.y);
+					auto end = ImVec2(start.x + contentSize.x + scrollX, start.y + mCharAdvance.y);
+					drawList->AddRectFilled(start, end, mPalette[(int)(focused ? PaletteIndex::CurrentLineFill : PaletteIndex::CurrentLineFillInactive)]);
+					drawList->AddRect(start, end, mPalette[(int)PaletteIndex::CurrentLineEdge], 1.0f);
+				}
 
 				// Render the cursors
 				if (focused)

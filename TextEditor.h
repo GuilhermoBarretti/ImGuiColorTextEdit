@@ -188,8 +188,8 @@ public:
 	void SetErrorMarkers(const ErrorMarkers& aMarkers) { mErrorMarkers = aMarkers; }
 	ErrorMarkers& GetErrorMarkers() { return mErrorMarkers; }
 	void ClearErrorMarkers();
-
 	void RequestScrollToErrorMarker() { mScrollToErrorMarker = true; }
+	bool HasErrorMarkers();
 
 	void SetTabSize(int aValue);
 	inline int GetTabSize() const { return mTabSize; }

@@ -48,6 +48,11 @@ void TextEditor::SetLanguageDefinition(const LanguageDefinition & aLanguageDef)
 	Colorize();
 }
 
+bool TextEditor::HasErrorMarkers()
+{
+	return mErrorMarkers.size() > 0;
+}
+
 void TextEditor::ClearErrorMarkers()
 {
 	mErrorMarkers.clear(); 

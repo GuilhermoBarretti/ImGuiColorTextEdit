@@ -2197,6 +2197,8 @@ void TextEditor::Render(bool aParentIsFocused)
 		snprintf(lineNumberBuffer, 16, " %zd ", mLines.size());
 		mTextStart += ImGui::GetFont()->CalcTextSizeA(ImGui::GetFontSize(), FLT_MAX, -1.0f, lineNumberBuffer, nullptr, nullptr).x;
 	}
+	
+	auto contentSize = ImGui::GetWindowContentRegionMax();
 
 	ImVec2 cursorScreenPos = ImGui::GetCursorScreenPos();
 	mScrollX = ImGui::GetScrollX();
@@ -2243,6 +2245,30 @@ void TextEditor::Render(bool aParentIsFocused)
 						mPalette[(int)PaletteIndex::Selection]);
 			}
 
+			// Draw error markers/highlight cursor line
+			auto start = ImVec2(lineStartScreenPos.x + mScrollX, lineStartScreenPos.y);
+			
+			// Draw error markers
+			auto errorIt = mErrorMarkers.find(lineNo + 1);
+			if (errorIt != mErrorMarkers.end())
+			{
+				auto end = ImVec2(lineStartScreenPos.x + contentSize.x + 2.0f * mScrollX, lineStartScreenPos.y + mCharAdvance.y);
+				drawList->AddRectFilled(start, end, mPalette[(int)PaletteIndex::ErrorMarker]);
+
+				if (ImGui::IsMouseHoveringRect(lineStartScreenPos, end))
+				{
+					ImGui::BeginTooltip();
+					ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 0.2f, 0.2f, 1.0f));
+					ImGui::Text("Error at line %d:", errorIt->first);
+					ImGui::PopStyleColor();
+					ImGui::Separator();
+					ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 1.0f, 0.2f, 1.0f));
+					ImGui::Text("%s", errorIt->second.c_str());
+					ImGui::PopStyleColor();
+					ImGui::EndTooltip();
+				}
+			}
+
 			// Draw line number (right aligned)
 			if (mShowLineNumbers)
 			{
@@ -2264,11 +2290,7 @@ void TextEditor::Render(bool aParentIsFocused)
 				// Highlight the current line (where the cursors is), unless it has selection.
 				if (!mState.mCursors[mState.mCurrentCursor].HasSelection())
 				{
-					auto scrollX = ImGui::GetScrollX();
-					auto scrollY = ImGui::GetScrollY();
-					auto contentSize = ImGui::GetWindowContentRegionMax();
-					auto start = ImVec2(lineStartScreenPos.x + scrollX, lineStartScreenPos.y);
-					auto end = ImVec2(start.x + contentSize.x + scrollX, start.y + mCharAdvance.y);
+					auto end = ImVec2(start.x + contentSize.x + mScrollX, start.y + mCharAdvance.y);
 					drawList->AddRectFilled(start, end, mPalette[(int)(focused ? PaletteIndex::CurrentLineFill : PaletteIndex::CurrentLineFillInactive)]);
 					drawList->AddRect(start, end, mPalette[(int)PaletteIndex::CurrentLineEdge], 1.0f);
 				}

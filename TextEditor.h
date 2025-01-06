@@ -131,6 +131,7 @@ public:
 
 	typedef std::unordered_map<std::string, Identifier> Identifiers;
 	typedef std::array<ImU32, (unsigned)PaletteIndex::Max> Palette;
+	typedef std::map<int, std::string> ErrorMarkers;
 
 	static const Palette& GetDarkPalette();
 	static const Palette& GetMarianaPalette();
@@ -183,6 +184,8 @@ public:
 
 	void SetLanguageDefinition(const LanguageDefinition& aLanguageDef);
 	const LanguageDefinition& GetLanguageDefinition() const { return *mLanguageDefinition; }
+	
+	void SetErrorMarkers(const ErrorMarkers& aMarkers) { mErrorMarkers = aMarkers; }
 
 	void SetTabSize(int aValue);
 	inline int GetTabSize() const { return mTabSize; }
@@ -453,6 +456,7 @@ private:
 	int mColorRangeMin = 0;
 	int mColorRangeMax = 0;
 	bool mCheckComments = true;
+	ErrorMarkers mErrorMarkers;
 	Palette mPalette;
 	const LanguageDefinition* mLanguageDefinition = nullptr;
 	RegexList mRegexList;

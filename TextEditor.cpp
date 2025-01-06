@@ -48,6 +48,11 @@ void TextEditor::SetLanguageDefinition(const LanguageDefinition & aLanguageDef)
 	Colorize();
 }
 
+void TextEditor::ClearErrorMarkers()
+{
+	mErrorMarkers.clear(); 
+}
+
 const char* TextEditor::GetLanguageDefinitionName() const
 {
 	return mLanguageDefinition != nullptr ? mLanguageDefinition->mName.c_str() : "None";

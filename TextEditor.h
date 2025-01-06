@@ -186,7 +186,8 @@ public:
 	const LanguageDefinition& GetLanguageDefinition() const { return *mLanguageDefinition; }
 	
 	void SetErrorMarkers(const ErrorMarkers& aMarkers) { mErrorMarkers = aMarkers; }
-	void ClearErrorMarkers() { mErrorMarkers.clear(); }
+	ErrorMarkers& GetErrorMarkers() { return mErrorMarkers; }
+	void ClearErrorMarkers();
 
 	void SetTabSize(int aValue);
 	inline int GetTabSize() const { return mTabSize; }

@@ -2439,7 +2439,9 @@ void TextEditor::Render(bool aParentIsFocused)
 	// Draw a tooltip on known identifiers/preprocessor symbols
 	if (ImGui::IsMousePosValid())
 	{
-		auto id = GetWordAt(ScreenPosToCoordinates(ImGui::GetMousePos()));
+		auto mouse_pos = ImGui::GetMousePos();
+		mouse_pos.x -= 6; // For some reason the mouse position offsetted by 6px?
+		auto id = GetWordAt(ScreenPosToCoordinates(mouse_pos));
 		if (!id.empty())
 		{
 			auto it = mLanguageDefinition->mIdentifiers.find(id);

@@ -2994,5 +2994,3 @@ const std::unordered_map<char, char> TextEditor::CLOSE_TO_OPEN_CHAR = {
 	{')' , '('},
 	{']' , '['}
 };
-
-TextEditor::PaletteId TextEditor::defaultPalette = TextEditor::PaletteId::Dark;

@@ -21,14 +21,6 @@ public:
 	TextEditor();
 	~TextEditor();
 
-	enum class PaletteId
-	{
-		Dark, Light, Mariana, RetroBlue
-	};
-	enum class LanguageDefinitionId
-	{
-		None, Cpp, C, Cs, Python, Lua, Json, Sql, AngelScript, Glsl, Hlsl
-	};
 	enum class SetViewAtLineMode
 	{
 		FirstVisibleLine, Centered, LastVisibleLine
@@ -139,7 +131,7 @@ public:
 
 	typedef std::unordered_map<std::string, Identifier> Identifiers;
 	typedef std::array<ImU32, (unsigned)PaletteIndex::Max> Palette;
-	
+
 	static const Palette& GetDarkPalette();
 	static const Palette& GetMarianaPalette();
 	static const Palette& GetLightPalette();
@@ -196,9 +188,6 @@ public:
 	inline int GetTabSize() const { return mTabSize; }
 	void SetLineSpacing(float aValue);
 	inline float GetLineSpacing() const { return mLineSpacing;  }
-
-	inline static void SetDefaultPalette(PaletteId aValue) { defaultPalette = aValue; }
-	inline static PaletteId GetDefaultPalette() { return defaultPalette; }
 
 	void SelectAll();
 	void SelectLine(int aLine);
@@ -475,5 +464,4 @@ private:
 
 	static const std::unordered_map<char, char> OPEN_TO_CLOSE_CHAR;
 	static const std::unordered_map<char, char> CLOSE_TO_OPEN_CHAR;
-	static PaletteId defaultPalette;
 };

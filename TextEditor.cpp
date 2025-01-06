@@ -15,7 +15,7 @@
 
 TextEditor::TextEditor()
 {
-	SetPalette(defaultPalette);
+	SetPalette(GetDarkPalette());
 	mLines.push_back(Line());
 }
 
@@ -23,25 +23,11 @@ TextEditor::~TextEditor()
 {
 }
 
-void TextEditor::SetPalette(PaletteId aValue)
+void TextEditor::SetPalette(const Palette &aValue)
 {
-	mPaletteId = aValue;
 	const Palette* palletteBase;
-	switch (mPaletteId)
-	{
-	case PaletteId::Dark:
-		palletteBase = &(GetDarkPalette());
-		break;
-	case PaletteId::Light:
-		palletteBase = &(GetLightPalette());
-		break;
-	case PaletteId::Mariana:
-		palletteBase = &(GetMarianaPalette());
-		break;
-	case PaletteId::RetroBlue:
-		palletteBase = &(GetRetroBluePalette());
-		break;
-	}
+	palletteBase = &aValue;
+
 	/* Update palette with the current alpha from style */
 	for (int i = 0; i < (int)PaletteIndex::Max; ++i)
 	{
@@ -51,47 +37,11 @@ void TextEditor::SetPalette(PaletteId aValue)
 	}
 }
 
-void TextEditor::SetLanguageDefinition(LanguageDefinitionId aValue)
+void TextEditor::SetLanguageDefinition(const LanguageDefinition & aLanguageDef)
 {
-	mLanguageDefinitionId = aValue;
-	switch (mLanguageDefinitionId)
-	{
-	case LanguageDefinitionId::None:
-		mLanguageDefinition = nullptr;
-		return;
-	case LanguageDefinitionId::Cpp:
-		mLanguageDefinition = &(LanguageDefinition::Cpp());
-		break;
-	case LanguageDefinitionId::C:
-		mLanguageDefinition = &(LanguageDefinition::C());
-		break;
-	case LanguageDefinitionId::Cs:
-		mLanguageDefinition = &(LanguageDefinition::Cs());
-		break;
-	case LanguageDefinitionId::Python:
-		mLanguageDefinition = &(LanguageDefinition::Python());
-		break;
-	case LanguageDefinitionId::Lua:
-		mLanguageDefinition = &(LanguageDefinition::Lua());
-		break;
-	case LanguageDefinitionId::Json:
-		mLanguageDefinition = &(LanguageDefinition::Json());
-		break;
-	case LanguageDefinitionId::Sql:
-		mLanguageDefinition = &(LanguageDefinition::Sql());
-		break;
-	case LanguageDefinitionId::AngelScript:
-		mLanguageDefinition = &(LanguageDefinition::AngelScript());
-		break;
-	case LanguageDefinitionId::Glsl:
-		mLanguageDefinition = &(LanguageDefinition::Glsl());
-		break;
-	case LanguageDefinitionId::Hlsl:
-		mLanguageDefinition = &(LanguageDefinition::Hlsl());
-		break;
-	}
-
+	mLanguageDefinition = &aLanguageDef;
 	mRegexList.clear();
+
 	for (const auto& r : mLanguageDefinition->mTokenRegexStrings)
 		mRegexList.push_back(std::make_pair(boost::regex(r.first, boost::regex_constants::optimize), r.second));
 

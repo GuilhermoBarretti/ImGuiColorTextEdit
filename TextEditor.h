@@ -217,6 +217,7 @@ public:
 	void SetViewAtLine(int aLine, SetViewAtLineMode aMode);
 
 	bool ConsumeSaveRequest();
+	bool ConsumeFindRequest();
 
 	void Copy();
 	void Cut();
@@ -417,6 +418,7 @@ private:
 	int mUndoIndex = 0;
 
 	bool mSaveRequested = false;
+	bool mFindRequested = false;
 
 	int mTabSize = 4;
 	float mLineSpacing = 1.0f;

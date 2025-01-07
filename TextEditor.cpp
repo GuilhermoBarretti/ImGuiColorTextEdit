@@ -2012,6 +2012,8 @@ void TextEditor::HandleKeyboardInputs(bool aParentIsFocused)
 			Copy();
 		else if (ctrl && !shift && !alt && ImGui::IsKeyPressed(ImGuiKey_S))
 			mSaveRequested = true;
+		else if (ctrl && !shift && !alt && ImGui::IsKeyPressed(ImGuiKey_F))
+			mFindRequested = true;
 		else if (!mReadOnly && isShiftOnly && ImGui::IsKeyPressed(ImGuiKey_Insert))
 			Paste();
 		else if (!mReadOnly && isShortcut && ImGui::IsKeyPressed(ImGuiKey_V))
@@ -2909,6 +2911,15 @@ bool TextEditor::ConsumeSaveRequest()
 {
 	if (mSaveRequested) {
 		mSaveRequested = false;
+		return true;
+	}
+	return false;
+}
+
+bool TextEditor::ConsumeFindRequest()
+{
+	if (mFindRequested) {
+		mFindRequested = false;
 		return true;
 	}
 	return false;

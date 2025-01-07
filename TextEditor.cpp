@@ -2508,18 +2508,14 @@ void TextEditor::Render(bool aParentIsFocused)
 		ImGui::SetScrollY(targetScroll);
 		mSetViewAtLine = -1;
 	}
-	
-	// Scroll To ErrorMarker
-	if (mScrollToErrorMarker)
+
+	// Center Scroll To Cursor
+	if (mAlignCursorToCenter)
 	{
-		mScrollToErrorMarker = false;
-		auto errorIt = mErrorMarkers.begin();
-		if (errorIt != mErrorMarkers.end())
-		{
-			auto coords = GetActualCursorCoordinates();
-			float targetScroll = std::max(0.0f, (coords.mLine - 0.5f) * mCharAdvance.y - (mContentHeight/2.0f));
-			ImGui::SetScrollY(targetScroll);
-		}
+		mAlignCursorToCenter = false;
+		auto coords = GetActualCursorCoordinates();
+		float targetScroll = std::max(0.0f, (coords.mLine - 0.5f) * mCharAdvance.y - (mContentHeight/2.0f));
+		ImGui::SetScrollY(targetScroll);
 	}
 }
 

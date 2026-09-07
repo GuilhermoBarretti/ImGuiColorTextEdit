@@ -3,12 +3,12 @@
 #include <set>
 #include <chrono>
 
+#define IMGUI_DEFINE_MATH_OPERATORS
 #include "TextEditor.h"
 
 #define IMGUI_SCROLLBAR_WIDTH 14.0f
 #define POS_TO_COORDS_COLUMN_OFFSET 0.33f
-#define IMGUI_DEFINE_MATH_OPERATORS
-#include "imgui.h" // for imGui::GetCurrentWindow()
+#include "imgui_internal.h"
 
 const float TOOLTIP_WIDTH = 650.0f;
 
@@ -384,6 +384,8 @@ bool TextEditor::Render(const char* aTitle, bool aParentIsFocused, const ImVec2&
 	ImGui::BeginChild(aTitle, aSize, aBorder, ImGuiWindowFlags_HorizontalScrollbar | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoNavInputs);
 
 	bool isFocused = ImGui::IsWindowFocused();
+	if (isFocused)
+		ImGui::SetKeyOwner(ImGuiKey_Escape, ImGui::GetID("##texteditor_escape"));
 	HandleKeyboardInputs(aParentIsFocused);
 	HandleMouseInputs();
 	ColorizeInternal();
@@ -2026,6 +2028,15 @@ void TextEditor::HandleKeyboardInputs(bool aParentIsFocused)
 			Cut();
 		else if (isShortcut && ImGui::IsKeyPressed(ImGuiKey_A))
 			SelectAll();
+		else if (!alt && !ctrl && !shift && !super && ImGui::IsKeyPressed(ImGuiKey_Escape))
+		{
+			if (mState.mCurrentCursor > 0)
+				ClearExtraCursors();
+			else if (AnyCursorHasSelection())
+				ClearSelections();
+			else
+				ImGui::FocusWindow(ImGui::GetCurrentWindow()->ParentWindow);
+		}
 		else if (isShortcut && ImGui::IsKeyPressed(ImGuiKey_D))
 		{
 			if (AnyCursorHasSelection())

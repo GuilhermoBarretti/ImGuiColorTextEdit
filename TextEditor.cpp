@@ -2027,7 +2027,15 @@ void TextEditor::HandleKeyboardInputs(bool aParentIsFocused)
 		else if (isShortcut && ImGui::IsKeyPressed(ImGuiKey_A))
 			SelectAll();
 		else if (isShortcut && ImGui::IsKeyPressed(ImGuiKey_D))
-			AddCursorForNextOccurrence();
+		{
+			if (AnyCursorHasSelection())
+				AddCursorForNextOccurrence();
+			else
+			{
+				Coordinates cursor_coords = mState.mCursors[mState.mCurrentCursor].mInteractiveEnd;
+				SetSelection(FindWordStart(cursor_coords), FindWordEnd(cursor_coords));
+			}
+		}
         else if (!mReadOnly && !alt && !ctrl && !shift && !super && (ImGui::IsKeyPressed(ImGuiKey_Enter) || ImGui::IsKeyPressed(ImGuiKey_KeypadEnter)))
 			EnterCharacter('\n', false);
 		else if (!mReadOnly && !alt && !ctrl && !super && ImGui::IsKeyPressed(ImGuiKey_Tab))

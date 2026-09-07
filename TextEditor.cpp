@@ -10,6 +10,8 @@
 #define IMGUI_DEFINE_MATH_OPERATORS
 #include "imgui.h" // for imGui::GetCurrentWindow()
 
+const float TOOLTIP_WIDTH = 650.0f;
+
 // --------------------------------------- //
 // ------------- Exposed API ------------- //
 
@@ -2270,13 +2272,15 @@ void TextEditor::Render(bool aParentIsFocused)
 				if (ImGui::IsMouseHoveringRect(lineStartScreenPos, end))
 				{
 					ImGui::BeginTooltip();
+					ImGui::PushTextWrapPos(ImGui::GetCursorPosX() + TOOLTIP_WIDTH);
 					ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 0.2f, 0.2f, 1.0f));
 					ImGui::Text("Error at line %d:", errorIt->first);
 					ImGui::PopStyleColor();
 					ImGui::Separator();
 					ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 1.0f, 0.2f, 1.0f));
-					ImGui::Text("%s", errorIt->second.c_str());
+					ImGui::TextWrapped("%s", errorIt->second.c_str());
 					ImGui::PopStyleColor();
+					ImGui::PopTextWrapPos();
 					ImGui::EndTooltip();
 				}
 			}
@@ -2432,7 +2436,9 @@ void TextEditor::Render(bool aParentIsFocused)
 			if (it != mLanguageDefinition->mIdentifiers.end())
 			{
 				ImGui::BeginTooltip();
-				ImGui::TextUnformatted(it->second.mDeclaration.c_str());
+				ImGui::PushTextWrapPos(ImGui::GetCursorPosX() + TOOLTIP_WIDTH);
+				ImGui::TextWrapped(it->second.mDeclaration.c_str());
+				ImGui::PopTextWrapPos();
 				ImGui::EndTooltip();
 			}
 			else
@@ -2441,7 +2447,9 @@ void TextEditor::Render(bool aParentIsFocused)
 				if (pi != mLanguageDefinition->mPreprocIdentifiers.end())
 				{
 					ImGui::BeginTooltip();
-					ImGui::TextUnformatted(pi->second.mDeclaration.c_str());
+					ImGui::PushTextWrapPos(ImGui::GetCursorPosX() + TOOLTIP_WIDTH);
+					ImGui::TextWrapped(pi->second.mDeclaration.c_str());
+					ImGui::PopTextWrapPos();
 					ImGui::EndTooltip();
 				}
 			}

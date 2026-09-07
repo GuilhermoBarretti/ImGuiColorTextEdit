@@ -204,6 +204,7 @@ public:
 	void SelectAllOccurrencesOf(const char* aText, int aTextSize, bool aCaseSensitive = true);
 	bool AnyCursorHasSelection() const;
 	bool AllCursorsHaveSelection() const;
+	std::string GetSelectedText(int aCursor = -1) const;
 	void ClearExtraCursors();
 	void ClearSelections();
 	void SetCursorPosition(int aLine, int aCharIndex);
@@ -335,7 +336,6 @@ private:
 
 	std::string GetText(const Coordinates& aStart, const Coordinates& aEnd) const;
 	std::string GetClipboardText() const;
-	std::string GetSelectedText(int aCursor = -1) const;
 
 	void SetCursorPosition(const Coordinates& aPosition, int aCursor = -1, bool aClearSelection = true);
 
